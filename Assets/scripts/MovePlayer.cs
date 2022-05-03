@@ -4,33 +4,65 @@ using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
-    float moveSpeed = 5f;
-    float jumpSpeed = 15f;
-    Rigidbody2D personaje;
+    public float moveSpeed = 5f;
+    public float jumpSpeed = 15f;
+    Rigidbody2D player;
+    public bool betterJump = true;
+    public float fallMultiplier = 0.5f;
+    public float lowJumpMultiplier = 1f;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
 
     void Start()
     {
-        personaje = GetComponent<Rigidbody2D>();
+        player = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
         if (Input.GetKey(KeyCode.D))
         {
-            personaje.velocity = new Vector2(moveSpeed, personaje.velocity.y);
+            player.velocity = new Vector2(moveSpeed, player.velocity.y);
+            spriteRenderer.flipX = false;
+            animator.SetBool("Run", true);
         } 
         else if (Input.GetKey(KeyCode.A))
         {
-            personaje.velocity = new Vector2(-moveSpeed, personaje.velocity.y);
+            player.velocity = new Vector2(-moveSpeed, player.velocity.y);
+            spriteRenderer.flipX = true;
+            animator.SetBool("Run", true);
         }
         else
         {
-            personaje.velocity = new Vector2(0, personaje.velocity.y);
+            player.velocity = new Vector2(0, player.velocity.y);
+            animator.SetBool("Run", false);
         }
         
-        if (Input.GetKeyDown(KeyCode.W) && CheckGround.isGrounded)
+        if (Input.GetKey(KeyCode.W) && CheckGround.isGrounded)
         {
-            personaje.velocity = new Vector2(personaje.velocity.x, jumpSpeed);
+            player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+        }
+
+        if (CheckGround.isGrounded == false)
+        {
+            animator.SetBool("Jump", true);
+            animator.SetBool("Run", false);
+        }
+        if (CheckGround.isGrounded == true)
+        {
+            animator.SetBool("Jump", false);
+        }
+
+        if (betterJump)
+        {
+            if (player.velocity.y < 0)
+            {
+                player.velocity += Vector2.up * Physics2D.gravity.y * fallMultiplier * Time.deltaTime;
+            }
+            if (player.velocity.y > 0 && !Input.GetKey(KeyCode.W))
+            {
+                player.velocity += Vector2.up * Physics2D.gravity.y * lowJumpMultiplier * Time.deltaTime;
+            }
         }
     }
 }
