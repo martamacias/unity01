@@ -12,6 +12,7 @@ public class MovePlayer : MonoBehaviour
     public float lowJumpMultiplier = 1f;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
+    public Transform kunai;
 
     void Start()
     {
@@ -64,5 +65,13 @@ public class MovePlayer : MonoBehaviour
                 player.velocity += Vector2.up * Physics2D.gravity.y * lowJumpMultiplier * Time.deltaTime;
             }
         }
+
+        /*if (Input.GetMouseButtonDown(0))
+        {
+            kunai.position = transform.position;
+            kunai.GetComponent<GameObject>().SetActive(true);
+
+            //kunai.GetComponent<Rigidbody2D>().AddForce()
+        }*/
     }
 }
