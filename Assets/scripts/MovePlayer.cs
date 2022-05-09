@@ -12,7 +12,9 @@ public class MovePlayer : MonoBehaviour
     public float lowJumpMultiplier = 1f;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
-    public Transform kunai;
+    public Transform throwPoint;
+    public GameObject kunai;
+    
 
     void Start()
     {
@@ -21,16 +23,19 @@ public class MovePlayer : MonoBehaviour
 
     void Update()
     {
+        
         if (Input.GetKey(KeyCode.D))
         {
             player.velocity = new Vector2(moveSpeed, player.velocity.y);
             spriteRenderer.flipX = false;
+            throwPoint.eulerAngles = new Vector3(0, 0, 0);
             animator.SetBool("Run", true);
         } 
         else if (Input.GetKey(KeyCode.A))
         {
             player.velocity = new Vector2(-moveSpeed, player.velocity.y);
             spriteRenderer.flipX = true;
+            throwPoint.eulerAngles = new Vector3(0, 180, 0);
             animator.SetBool("Run", true);
         }
         else
@@ -66,12 +71,9 @@ public class MovePlayer : MonoBehaviour
             }
         }
 
-        /*if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            kunai.position = transform.position;
-            kunai.GetComponent<GameObject>().SetActive(true);
-
-            //kunai.GetComponent<Rigidbody2D>().AddForce()
-        }*/
+            Instantiate(kunai, throwPoint.position, throwPoint.rotation);
+        }
     }
 }
