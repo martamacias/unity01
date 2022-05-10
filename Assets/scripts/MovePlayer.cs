@@ -14,6 +14,8 @@ public class MovePlayer : MonoBehaviour
     public Animator animator;
     public Transform throwPoint;
     public GameObject kunai;
+    public GameObject deadScreen;
+    public GameObject buttonPause;
     
 
     void Start()
@@ -73,7 +75,25 @@ public class MovePlayer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(kunai, throwPoint.position, throwPoint.rotation);
+
+
+            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 aimDirection = worldPosition - (Vector2)transform.position;
+            aimDirection.Normalize();
+            
+            var obj = Instantiate(kunai, throwPoint.position, throwPoint.rotation);
+
+            obj.GetComponent<Rigidbody2D>().velocity = aimDirection * obj.GetComponent<ThrowKunai>().speedX;
+            obj.GetComponent<ThrowKunai>().playerTransform = transform;
+
+            
+        }
+
+        if (EnemyHit.enemyHit)
+        {
+            spriteRenderer.enabled = false;
+            buttonPause.SetActive(false);
+            deadScreen.SetActive(true);
         }
     }
 }

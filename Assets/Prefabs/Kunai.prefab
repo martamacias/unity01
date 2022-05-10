@@ -158,3 +158,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedX: 15
+  ac: 10
+  playerTransform: {fileID: 0}
