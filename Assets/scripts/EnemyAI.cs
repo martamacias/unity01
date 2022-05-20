@@ -71,4 +71,12 @@ public class EnemyAI : MonoBehaviour
             animator.SetBool("Walk", false);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Weapon"))
+        {
+            Destroy(gameObject, 0f);
+        }
+    }
 }

@@ -20,14 +20,14 @@ public class CameraScript : MonoBehaviour
     {
         playerPos = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
 
-        if (Input.GetKey(KeyCode.D)) //derecha
+        /*if (Input.GetKey(KeyCode.D)) //derecha
         {
             playerPos = new Vector3(playerPos.x + forward, playerPos.y, transform.position.z);
         }
         if (Input.GetKey(KeyCode.A)) //izquierda
         {
             playerPos = new Vector3(playerPos.x - forward, playerPos.y, transform.position.z);
-        }
+        }*/
         transform.position = Vector3.Lerp(transform.position, playerPos, smoothing * Time.deltaTime);
     }
 }

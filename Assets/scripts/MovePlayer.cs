@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MovePlayer : MonoBehaviour
 {
@@ -16,11 +17,17 @@ public class MovePlayer : MonoBehaviour
     public GameObject kunai;
     public GameObject deadScreen;
     public GameObject buttonPause;
-    
+    public GameObject scoreTxt;
+    public GameObject winScreen;
+    public static int score;
+    public AudioSource backgroundSound;
+    public AudioSource winSound;
+    public AudioSource gameOverSound;
 
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
+        score = 0;
     }
 
     void Update()
@@ -29,15 +36,13 @@ public class MovePlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             player.velocity = new Vector2(moveSpeed, player.velocity.y);
-            spriteRenderer.flipX = false;
-            throwPoint.eulerAngles = new Vector3(0, 0, 0);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             animator.SetBool("Run", true);
         } 
         else if (Input.GetKey(KeyCode.A))
         {
             player.velocity = new Vector2(-moveSpeed, player.velocity.y);
-            spriteRenderer.flipX = true;
-            throwPoint.eulerAngles = new Vector3(0, 180, 0);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             animator.SetBool("Run", true);
         }
         else
@@ -75,8 +80,6 @@ public class MovePlayer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-
-
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 aimDirection = worldPosition - (Vector2)transform.position;
             aimDirection.Normalize();
@@ -85,7 +88,6 @@ public class MovePlayer : MonoBehaviour
 
             obj.GetComponent<Rigidbody2D>().velocity = aimDirection * obj.GetComponent<ThrowKunai>().speedX;
             obj.GetComponent<ThrowKunai>().playerTransform = transform;
-
             
         }
 
@@ -94,6 +96,18 @@ public class MovePlayer : MonoBehaviour
             spriteRenderer.enabled = false;
             buttonPause.SetActive(false);
             deadScreen.SetActive(true);
+            backgroundSound.Stop();
+            gameOverSound.Play();
         }
+        
+        if (score == 2)
+        {
+            buttonPause.SetActive(false);
+            scoreTxt.SetActive(false);
+            winScreen.SetActive(true);
+            backgroundSound.Stop();
+            winSound.Play();
+        }
+        
     }
 }

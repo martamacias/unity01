@@ -5,30 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class MenuPausa : MonoBehaviour
 {
-    [SerializeField] private GameObject buttonPause;
-    [SerializeField] private GameObject menuPause;
-    private bool gamePaused = false;
+    public GameObject buttonPause;
+    public GameObject menuPause;
+    public GameObject scoreTxt;
+
+    //private bool gamePaused = false;
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        /*if(Input.GetKeyDown(KeyCode.Escape)){
             if (gamePaused) {
                 Resume();
             } else {
                 Pause();
             }
-        }
+        }*/
     }
     public void Pause()
     {
-        gamePaused = true;
+        //gamePaused = true;
         Time.timeScale = 0f;
         buttonPause.SetActive(false);
+        scoreTxt.SetActive(false);
         menuPause.SetActive(true);
     }
     public void Resume()
     {
-        gamePaused = false;
+        //gamePaused = false;
         Time.timeScale = 1f;
         buttonPause.SetActive(true);
+        scoreTxt.SetActive(true);
         menuPause.SetActive(false);
     }
     public void Restart()
